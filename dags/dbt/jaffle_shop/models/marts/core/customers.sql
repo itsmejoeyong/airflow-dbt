@@ -5,14 +5,17 @@ Database Error in model customers (models\marts\core\customers.sql)
   compiled Code at target\run\jaffle_shop\models\marts\core\customers.sql
 */
 with customers as (
-    select * from {{ ref('stg_customers')}}
+    select * from {{ ref('stg_customers') }}
 ),
-employees as(
+
+employees as (
     select * from {{ ref('employees') }}
 ),
+
 orders as (
-    select * from {{ ref('fct_orders')}}
+    select * from {{ ref('fct_orders') }}
 ),
+
 customer_orders as (
     select
         customer_id,
@@ -23,18 +26,22 @@ customer_orders as (
     from orders
     group by 1
 ),
+
 final as (
     select
         customers.customer_id,
         customers.first_name,
         customers.last_name,
---        employees.employee_id is not null as is_employee,
+        --        employees.employee_id is not null as is_employee,
         customer_orders.first_order_date,
         customer_orders.most_recent_order_date,
-        coalesce(customer_orders.number_of_orders, 0) as number_of_orders,
-        customer_orders.lifetime_value
+        customer_orders.lifetime_value,
+        coalesce(customer_orders.number_of_orders, 0) as number_of_orders
     from customers
-    left join customer_orders using (customer_id)
+    left join
+        customer_orders
+        on customers.customer_id = customer_orders.customer_id
 --    left join employees using (customer_id)
 )
+
 select * from final
