@@ -52,30 +52,65 @@ sources:
 packages:
   - local: ../<your shared sources directory name>
 ```
-5. modify your existing projects dbt_project.yml to write to a specific schema (update the directory as well):
+5. create a duplicate profile so that each project writes to a different dataset:
+```
+monorepo_1:
+  outputs:
+    dev:
+      dataset: dbt_us_monorepo_1
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      keyfile: <redacted>
+      location: US
+      method: service-account
+      priority: interactive
+      project: <redacted>
+      threads: 1
+      type: bigquery
+  target: dev
+
+monorepo_2:
+  outputs:
+    dev:
+      dataset: dbt_us_monorepo_2
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      keyfile: <redacted>
+      location: US
+      method: service-account
+      priority: interactive
+      project: <redacted>
+      threads: 1
+      type: bigquery
+  target: dev
+
+
+```
+6. modify your existing projects dbt_project.yml profile to write to a specific schema (update the directory as well):
 ```
 # example, in jaffle_shop
+...
+profile: 'monorepo_1'
+...
 models:
   jaffle_shop:
     marts:
       core:
         +materialized: table
-        +schema: monorepo_1
     staging:
       +materialized: view
-      +schema: monorepo_1
 
 # example, in jaffle_shop_2
-
+...
+profile: 'monorepo_2'
+...
 models:
   jaffle_shop_2:
     marts:
       core:
         +materialized: table
-        +schema: monorepo_2
     staging:
       +materialized: view
-      +schema: monorepo_2
 ```
-6. run `dbt deps` on both of your dbt projects that rely on your shared sources directory
-7. run `dbt run` on your other projects and it will create them in their respective schemas
+7. run `dbt deps` on both of your dbt projects that rely on your shared sources directory
+8. run `dbt run` on your other projects and it will create them in their respective schemas
