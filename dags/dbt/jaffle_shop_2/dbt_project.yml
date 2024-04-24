@@ -7,7 +7,7 @@ version: '1.0.0'
 config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
-profile: 'jaffle_shop'
+profile: 'monorepo_2'
 
 # These configurations specify where dbt should look for different types of files.
 # The `model-paths` config, for example, states that models in this project can be
@@ -35,7 +35,5 @@ models:
     marts:
       core:
         +materialized: table
-        +schema: monorepo_2
     staging:
       +materialized: view
-      +schema: monorepo_2
