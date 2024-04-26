@@ -1,2 +1,3 @@
 packages:
-  - local: ../shared_src
+  - git: https://github.com/itsmejoeyong/airflow-dbt.git
+    revision: shared_src

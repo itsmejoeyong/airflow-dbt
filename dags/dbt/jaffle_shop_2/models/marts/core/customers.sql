@@ -8,10 +8,6 @@ with customers as (
     select * from {{ ref('stg_customers') }}
 ),
 
-employees as (
-    select * from {{ ref('employees') }}
-),
-
 orders as (
     select * from {{ ref('fct_orders') }}
 ),

@@ -1,3 +1,4 @@
 packages:
-- local: ../shared_src
-sha1_hash: 31eeb433fc2632806d6c90ed438cc90b035c4b3b
+- git: https://github.com/itsmejoeyong/airflow-dbt.git
+  revision: 814c755c295a4d70d22b48ac268bb5e590505501
+sha1_hash: ce1fc6affde5aa606d1e2e01f5cb2f65a43f1bcb
