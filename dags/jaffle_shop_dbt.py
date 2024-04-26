@@ -18,7 +18,7 @@ profile_config = ProfileConfig(
 
 my_cosmos_dag = DbtDag(
     project_config=ProjectConfig(
-        "/usr/local/airflow/dags/dbt/jaffle_shop/",
+        "/usr/local/airflow/dbt/jaffle_shop/",
     ),
     profile_config=profile_config,
     execution_config=ExecutionConfig(
